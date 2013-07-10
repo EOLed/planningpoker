@@ -1,8 +1,8 @@
 /*global sinon: false, describe: false, beforeEach: false, inject: false, it: false, expect: false*/
 'use strict';
 
-describe('Controller: RoomCtrl', function () {
-  var randomHexService, RoomCtrl, scope, $httpBackend, $location;
+describe('Controller: FindRoomCtrl', function () {
+  var randomHexService, FindRoomCtrl, scope, $httpBackend, $location;
 
   // load the controller's module
   beforeEach(module('planningPokerApp'));
@@ -10,7 +10,7 @@ describe('Controller: RoomCtrl', function () {
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, _randomHexService_, _$httpBackend_, _$location_) {
     scope = $rootScope.$new();
-    RoomCtrl = $controller('RoomCtrl', { $scope: scope });
+    FindRoomCtrl = $controller('FindRoomCtrl', { $scope: scope });
     $httpBackend = _$httpBackend_;
     randomHexService = _randomHexService_;
     $location = _$location_;

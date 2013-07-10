@@ -4,12 +4,8 @@ angular.module('planningPokerApp', [])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/room.html',
-        controller: 'RoomCtrl'
-      })
-      .when('/room', {
-        templateUrl: 'views/room.html',
-        controller: 'RoomCtrl'
+        templateUrl: 'views/findRoom.html',
+        controller: 'FindRoomCtrl'
       })
       .when('/room/:slug', {
         templateUrl: 'views/room.html',
