@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="hero-unit">
+    <h1>Planning Poker</h1>
+    <p>
+      Planning poker, also called Scrum poker, is a consensus-based technique for estimating,
+      mostly used to estimate effort or relative size of user stories in software development.
+      It is a variation of the Wideband Delphi method. It is most commonly used in agile 
+      software development, in particular the Extreme Programming methodology.
+    </p>
+
+    <form class="form-inline" ng-controller="RoomCtrl">
+      <div class="input-append">
+        <input class="span2" id="roomId" type="text" placeholder="Room ID" />
+        <button class="btn" type="button">Join</button>
+      </div>
+      <button class="btn btn-primary" type="button" ng-click="hostRoom()">Host Room</button>
+    </form>
+  </div>
+</div>
