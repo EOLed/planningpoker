@@ -7,7 +7,7 @@ basePath = '';
 files = [
   JASMINE,
   JASMINE_ADAPTER,
-  'app/bower_components/sinon/lib/sinon.js',
+  'app/bower_components/sinonjs/sinon.js',
   'app/bower_components/angular/angular.js',
   'app/bower_components/angular-mocks/angular-mocks.js',
   'app/scripts/*.js',
