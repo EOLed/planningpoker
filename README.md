@@ -1,2 +1,2 @@
-planningpoker
-=============
+# planningpoker
+### a Sails application
