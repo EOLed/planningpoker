@@ -16,6 +16,13 @@ describe('Controller: FindRoomCtrl', function () {
     $location = _$location_;
   }));
 
+  describe('action: join', function () {
+    it('should change location to the room specified', function () {
+      scope.join('f345dc');
+      expect($location.url()).toBe('/room/f345dc');
+    });
+  });
+
   describe('action: hostRoom', function () {
     it('should create new room with randomly generated hex string', function () {
       sinon.stub(randomHexService, 'generate').returns('e32d442');

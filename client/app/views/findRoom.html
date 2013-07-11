@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" ng-controller="FindRoomCtrl">
   <div class="hero-unit">
     <h1>Planning Poker</h1>
     <p>
@@ -8,10 +8,17 @@
       software development, in particular the Extreme Programming methodology.
     </p>
 
-    <form class="form-inline" ng-controller="FindRoomCtrl">
+    <form class="form-inline" name="roomForm">
       <div class="input-append">
-        <input class="span2" id="roomId" type="text" placeholder="Room ID" />
-        <button class="btn" type="button">Join</button>
+        <input class="span2"
+               name="slug"
+               type="text"
+               placeholder="Room ID"
+               ng-model="slug"
+               required />
+        <button class="btn" type="button" ng-click="join(slug)" ng-disabled="roomForm.slug.$invalid">
+          Join
+        </button>
       </div>
       <button class="btn btn-primary" type="button" ng-click="hostRoom()">Host Room</button>
     </form>
