@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('planningPokerApp', [])
+angular.module('planningPokerApp', ['LocalStorageModule'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
