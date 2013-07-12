@@ -9,11 +9,11 @@ angular.module('planningPokerApp')
       getUser: function () {
         var user = localStorageService.get('user');
         if (user) {
-          return user;
+          return JSON.parse(user);
         }
 
         user = { id: randomHexService.generate(10000000) };
-        localStorageService.add('user', user);
+        localStorageService.add('user', JSON.stringify(user));
         return user;
       }
     };

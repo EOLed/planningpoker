@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('planningPokerApp')
-  .controller('RoomCtrl', function ($scope, $http, $routeParams) {
+  .controller('RoomCtrl', function ($scope, $http, $routeParams, socket, userService) {
     var onsuccess = function (data, status, headers, config) {
       $scope.room = data;
     };
 
-    $http.get('/room/' + $routeParams.slug).success(onsuccess);
+    $http.put('/room/join/' + $routeParams.slug, { user: userService.getUser() }).success(onsuccess);
   });

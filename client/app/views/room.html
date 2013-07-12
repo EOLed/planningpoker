@@ -1,4 +1,9 @@
 <div class="container" ng-controller="RoomCtrl">
   <h1>Welcome to room {{room.slug}}</h1>
+  <ul>
+    <li ng-repeat="user in room.users">
+      {{user.id}}
+    </li>
+  </ul>
 </div>
 

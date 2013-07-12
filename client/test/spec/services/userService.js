@@ -31,7 +31,7 @@ describe('Service: userService', function () {
 
   it('should return cached user if exists', function () {
     var cachedUser = { id: 'eeeeeeeeee', username: 'achan', name: 'Amos Chan' };
-    sinon.stub(localStorageService, 'get').withArgs('user').returns(cachedUser);
+    sinon.stub(localStorageService, 'get').withArgs('user').returns(JSON.stringify(cachedUser));
     spyOn(localStorageService, 'add');
     var actualUser = userService.getUser();
     expect(localStorageService.add).not.toHaveBeenCalled();
