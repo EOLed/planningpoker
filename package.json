@@ -15,5 +15,13 @@
   "main": "app.js",
   "repository": "",
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "grunt-contrib-jasmine": "~0.5.1",
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-jasmine": "~0.1.0",
+    "sinon": "~1.7.3",
+    "grunt-jasmine-node": "~0.1.0"
+  }
 }
