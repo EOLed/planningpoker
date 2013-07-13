@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('planningPokerApp', ['LocalStorageModule', 'btford.socket-io'])
-  .config(function ($routeProvider, socketProvider) {
+  .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/findRoom.html',
@@ -14,6 +14,4 @@ angular.module('planningPokerApp', ['LocalStorageModule', 'btford.socket-io'])
       .otherwise({
         redirectTo: '/'
       });
-
-    socketProvider.prefix('pp');
   });
