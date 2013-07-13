@@ -26,23 +26,34 @@ describe('Controller: RoomCtrl', function () {
   );
 
   describe('Backend running', function () {
-    beforeEach(function () {
-      var currentUser = { username: 'achan' };
-      sinon.stub(userService, 'getUser').returns(currentUser);
-      var selectedRoom = { slug: 'e3421',
-                           users: [{ username: 'achan', voter: true },
-                                   { username: 'vsharma', voter: true },
-                                   { username: 'drivet', voter: true },
-                                   { username: 'paul', voter: false }] };
+    var selectedRoom, currentUser;
 
+    beforeEach(function () {
+      currentUser = { username: 'achan' };
+      sinon.stub(userService, 'getUser').returns(currentUser);
+      selectedRoom = { slug: 'e3421',
+                       key: 'thisistheroomkey',
+                       users: [{ username: 'achan', voter: true },
+                               { username: 'vsharma', voter: true },
+                               { username: 'drivet', voter: true },
+                               { username: 'paul', voter: false }] };
       $httpBackend.expectPUT('/room/join/e3421', { user: currentUser }).respond(200, selectedRoom);
-      RoomCtrl = createController();
-      $httpBackend.flush();
     });
 
     it('should attach current room to scope', function () {
-      expect(scope.room.slug).toEqual('e3421');
-      expect(scope.room.users.length).toEqual(4);
+      RoomCtrl = createController();
+      $httpBackend.flush();
+      expect(scope.room).toEqual(selectedRoom);
+    });
+
+    it('should fowards room specific socket calls to scope', function () {
+      var mockSocket = sinon.mock(socket)
+                            .expects('forward')
+                            .withArgs('message thisistheroomkey', scope)
+                            .once();
+      RoomCtrl = createController();
+      $httpBackend.flush();
+      mockSocket.verify();
     });
   });
 });
