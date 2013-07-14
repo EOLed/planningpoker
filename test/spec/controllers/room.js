@@ -56,15 +56,22 @@ describe('Controller: RoomCtrl', function () {
       mockSocket.verify();
     });
 
-    it('should listen for room specific socket events broadcasted to scope', function () {
-      // temporary functionality
+    describe('User has successfully joined room', function () {
+      beforeEach(function () {
+        RoomCtrl = createController();
+        $httpBackend.flush();
+      });
 
-      RoomCtrl = createController();
-      $httpBackend.flush();
+      it('should filter out unsupported/irrelevant messages', function () {
+        // temporary functionality
+        scope.$broadcast('socket:message thisistheroomkey', { test: 'data' });
+        expect(scope.room).toEqual(selectedRoom);
+      });
 
-      spyOn(console, 'log');
-      scope.$broadcast('socket:message thisistheroomkey', { test: 'data' });
-      expect(console.log).toHaveBeenCalledWith('message received: {"test":"data"}');
+      it('should update scope.room when a new user has joined', function() {
+        scope.$broadcast('socket:message thisistheroomkey', { type: 'join', room: { mydata: 'test' } });
+        expect(scope.room).toEqual({ mydata: 'test' });
+      });
     });
   });
 });
