@@ -1,4 +1,4 @@
-/*global sinon: false, describe: false, beforeEach: false, inject: false, it: false, expect: false*/
+/*global sinon: false, spyOn: false, describe: false, beforeEach: false, inject: false, it: false, expect: false*/
 'use strict';
 
 describe('Controller: RoomCtrl', function () {
@@ -46,7 +46,7 @@ describe('Controller: RoomCtrl', function () {
       expect(scope.room).toEqual(selectedRoom);
     });
 
-    it('should fowards room specific socket calls to scope', function () {
+    it('should forward room specific socket calls to scope', function () {
       var mockSocket = sinon.mock(socket)
                             .expects('forward')
                             .withArgs('message thisistheroomkey', scope)
@@ -54,6 +54,17 @@ describe('Controller: RoomCtrl', function () {
       RoomCtrl = createController();
       $httpBackend.flush();
       mockSocket.verify();
+    });
+
+    it('should listen for room specific socket events broadcasted to scope', function () {
+      // temporary functionality
+
+      RoomCtrl = createController();
+      $httpBackend.flush();
+
+      spyOn(console, 'log');
+      scope.$broadcast('socket:message thisistheroomkey', { test: 'data' });
+      expect(console.log).toHaveBeenCalledWith('message received: {"test":"data"}');
     });
   });
 });
