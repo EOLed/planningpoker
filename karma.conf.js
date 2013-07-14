@@ -12,6 +12,7 @@ files = [
   'app/bower_components/angular-mocks/angular-mocks.js',
   'app/bower_components/angular-socket-io/socket.js',
   'app/bower_components/socket.io-client/dist/socket.io.js',
+  'app/vendors/*.js',
   'app/scripts/*.js',
   'app/scripts/**/*.js',
   'test/mock/**/*.js',
