@@ -15,7 +15,7 @@ files = [
   'app/vendors/*.js',
   'app/scripts/*.js',
   'app/scripts/**/*.js',
-  'test/mock/**/*.js',
+  // 'test/mock/**/*.js',
   'test/spec/**/*.js'
 ];
 
