@@ -3,19 +3,20 @@
 angular.module('planningPokerApp')
   .controller('RoomCtrl', function ($scope, $http, $routeParams, socket, userService) {
     var deck = { type: 'mountainGoat',
-                 cards: [ { display: '0', value: '0' },
-                          { display: '&frac12;', value: '.5' },
-                          { display: '1', value: '1' },
-                          { display: '2', value: '2' },
-                          { display: '3', value: '3' },
-                          { display: '5', value: '5' },
-                          { display: '8', value: '8' },
-                          { display: '13', value: '13' },
-                          { display: '20', value: '20' },
-                          { display: '40', value: '40' },
-                          { display: '100', value: '100' },
-                          { display: '?', value: '?' },
-                          { display: '<img class="coffee" src="images/coffee.png" />',
+                 cards: [ { selected: false, display: '0', value: '0' },
+                          { selected: false, display: '&frac12;', value: '.5' },
+                          { selected: false, display: '1', value: '1' },
+                          { selected: false, display: '2', value: '2' },
+                          { selected: false, display: '3', value: '3' },
+                          { selected: false, display: '5', value: '5' },
+                          { selected: false, display: '8', value: '8' },
+                          { selected: false, display: '13', value: '13' },
+                          { selected: false, display: '20', value: '20' },
+                          { selected: false, display: '40', value: '40' },
+                          { selected: false, display: '100', value: '100' },
+                          { selected: false, display: '?', value: '?' },
+                          { selected: false,
+                            display: '<img class="coffee" src="images/coffee.png" />',
                             value: 'coffee' } ] };
 
     var onJoin = function (data) {
@@ -33,6 +34,13 @@ angular.module('planningPokerApp')
           onJoin(data);
         }
       });
+    };
+
+    $scope.selectCard = function (card) {
+      for (var i = 0; i < $scope.deck.cards.length; i++) {
+        var cardInDeck = $scope.deck.cards[i];
+        cardInDeck.selected = card.value === cardInDeck.value;
+      }
     };
 
     $http.put('/room/join/' + $routeParams.slug, { user: userService.getUser() })

@@ -1,5 +1,11 @@
 .deck {
   text-align: center;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: moz-none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .card {
@@ -18,4 +24,9 @@
 
 .card img.coffee {
   height: 50px;
+}
+
+.card.selected {
+  border-color: #EE0;
+  border-width: 3px;
 }

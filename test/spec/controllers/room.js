@@ -1,4 +1,4 @@
-/*global sinon: false, spyOn: false, describe: false, beforeEach: false, inject: false, it: false, expect: false*/
+/*global sinon: false, describe: false, beforeEach: false, inject: false, it: false, expect: false*/
 'use strict';
 
 describe('Controller: RoomCtrl', function () {
@@ -26,7 +26,7 @@ describe('Controller: RoomCtrl', function () {
   );
 
   describe('Backend running', function () {
-    var selectedRoom, currentUser;
+    var selectedRoom, currentUser, deck;
 
     beforeEach(function () {
       currentUser = { username: 'achan' };
@@ -38,33 +38,28 @@ describe('Controller: RoomCtrl', function () {
                                { username: 'drivet', voter: true },
                                { username: 'paul', voter: false }] };
       $httpBackend.expectPUT('/room/join/e3421', { user: currentUser }).respond(200, selectedRoom);
+      deck = { type: 'mountainGoat',
+               cards: [ { selected: false, display: '0', value: '0' },
+                        { selected: false, display: '&frac12;', value: '.5' },
+                        { selected: false, display: '1', value: '1' },
+                        { selected: false, display: '2', value: '2' },
+                        { selected: false, display: '3', value: '3' },
+                        { selected: false, display: '5', value: '5' },
+                        { selected: false, display: '8', value: '8' },
+                        { selected: false, display: '13', value: '13' },
+                        { selected: false, display: '20', value: '20' },
+                        { selected: false, display: '40', value: '40' },
+                        { selected: false, display: '100', value: '100' },
+                        { selected: false, display: '?', value: '?' },
+                        { selected: false,
+                          display: '<img class="coffee" src="images/coffee.png" />',
+                          value: 'coffee' } ] };
     });
 
     it('should attach current room to scope', function () {
       RoomCtrl = createController();
       $httpBackend.flush();
       expect(scope.room).toEqual(selectedRoom);
-    });
-
-    it('should attach a deck of mountain goat cards to scope', function () {
-      var deck = { type: 'mountainGoat',
-                   cards: [ { display: '0', value: '0' },
-                            { display: '&frac12;', value: '.5' },
-                            { display: '1', value: '1' },
-                            { display: '2', value: '2' },
-                            { display: '3', value: '3' },
-                            { display: '5', value: '5' },
-                            { display: '8', value: '8' },
-                            { display: '13', value: '13' },
-                            { display: '20', value: '20' },
-                            { display: '40', value: '40' },
-                            { display: '100', value: '100' },
-                            { display: '?', value: '?' },
-                            { display: '<img class="coffee" src="images/coffee.png" />',
-                              value: 'coffee' } ] };
-      RoomCtrl = createController();
-      $httpBackend.flush();
-      expect(scope.deck).toEqual(deck);
     });
 
     it('should forward room specific socket calls to scope', function () {
@@ -76,6 +71,26 @@ describe('Controller: RoomCtrl', function () {
       $httpBackend.flush();
       mockSocket.verify();
     });
+
+    describe('Deck', function () {
+      beforeEach(function () {
+        RoomCtrl = createController();
+        $httpBackend.flush();
+      });
+
+      it('should attach a deck of mountain goat cards to scope', function () {
+        expect(scope.deck).toEqual(deck);
+      });
+
+      it('should only have one selected card at a time', function () {
+        scope.selectCard({ display: '5', value: '5' });
+        for (var i = 0; i < scope.deck.cards.length; i++) {
+          var cardInDeck = scope.deck.cards[i];
+          expect(cardInDeck.selected).toEqual( cardInDeck.value === '5');
+        }
+      });
+    });
+
 
     describe('User has successfully joined room', function () {
       beforeEach(function () {

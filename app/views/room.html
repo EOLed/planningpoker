@@ -2,7 +2,10 @@
   <h1>Welcome to room {{room.slug}}</h1>
 
   <div class="deck">
-    <card ng-repeat="card in deck.cards" value="{{card.value}}">
+    <card ng-class="{'selected': $parent.card.selected}"
+          ng-repeat="card in deck.cards"
+          value="{{card.value}}"
+          ng-click="$parent.selectCard($parent.card)">
       <span ng-bind-html-unsafe="card.display"></span>
     </card>
   </div>
