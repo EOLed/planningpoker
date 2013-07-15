@@ -10,7 +10,7 @@ angular.module('planningPokerApp')
       scope: {
         value: '@'
       },
-      link: function postLink(scope, element, attrs) {
+      link: function postLink() {// scope, element, attrs) {
       }
     };
   });
