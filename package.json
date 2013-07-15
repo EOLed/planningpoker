@@ -24,7 +24,20 @@
     "matchdep": "~0.1.2",
     "connect-livereload": "~0.2.0",
     "grunt-google-cdn": "~0.2.0",
-    "grunt-ngmin": "~0.0.2"
+    "grunt-ngmin": "~0.0.2",
+    "yeoman-generator": "~0.12.3",
+    "generator-karma": "~0.3.1",
+    "generator-angular": "~0.3.0",
+    "karma-script-launcher": "0.0.2",
+    "karma-chrome-launcher": "0.0.2",
+    "karma-firefox-launcher": "0.0.3",
+    "karma-jasmine": "0.0.2",
+    "karma-requirejs": "0.0.2",
+    "karma-coffee-preprocessor": "0.0.2",
+    "karma-phantomjs-launcher": "0.0.2",
+    "karma": "~0.9.4",
+    "karma-ng-html2js-preprocessor": "0.0.2",
+    "grunt-html2js": "~0.1.6"
   },
   "engines": {
     "node": ">=0.8.0"

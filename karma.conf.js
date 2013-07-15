@@ -1,22 +1,23 @@
 // Karma configuration
 
 // base path, that will be used to resolve files and exclude
-basePath = '';
+basePath = 'app';
 
 // list of files / patterns to load in the browser
 files = [
   JASMINE,
   JASMINE_ADAPTER,
-  'app/bower_components/sinonjs/sinon.js',
-  'app/bower_components/angular/angular.js',
-  'app/bower_components/angular-mocks/angular-mocks.js',
-  'app/bower_components/angular-socket-io/socket.js',
-  'app/bower_components/socket.io-client/dist/socket.io.js',
-  'app/vendors/*.js',
-  'app/scripts/*.js',
-  'app/scripts/**/*.js',
+  'bower_components/sinonjs/sinon.js',
+  'bower_components/angular/angular.js',
+  'bower_components/angular-mocks/angular-mocks.js',
+  'bower_components/angular-socket-io/socket.js',
+  'bower_components/socket.io-client/dist/socket.io.js',
+  'vendors/*.js',
+  'scripts/*.js',
+  'scripts/**/*.js',
+  'views/directives/*.html',
   // 'test/mock/**/*.js',
-  'test/spec/**/*.js'
+  '../test/spec/**/*.js'
 ];
 
 // list of files to exclude
@@ -32,7 +33,8 @@ coverageReporter = {
 };
 
 preprocessors = {
-  'app/scripts/**/*.js': 'coverage'
+  'scripts/**/*.js': 'coverage',
+  'views/directives/*.html': 'html2js'
 };
 
 // web server port

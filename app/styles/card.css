@@ -1,0 +1,21 @@
+.deck {
+  text-align: center;
+}
+
+.card {
+  background-color: #fff;
+  width: 100px;
+  border: 1px solid #ccc;
+  display: inline-block;
+  margin: 10px;
+  padding: 50px 0;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 4px;
+  font-size: 32px;
+  line-height: 60px;
+}
+
+.card img.coffee {
+  height: 50px;
+}

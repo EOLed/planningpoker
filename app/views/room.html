@@ -1,9 +1,25 @@
 <div class="container">
   <h1>Welcome to room {{room.slug}}</h1>
+
+  <div class="deck">
+    <card value="0">0</card>
+    <card value=".5">&frac12;</card>
+    <card value="1">1</card>
+    <card value="2">2</card>
+    <card value="3">3</card>
+    <card value="5">5</card>
+    <card value="8">8</card>
+    <card value="13">13</card>
+    <card value="20">20</card>
+    <card value="40">40</card>
+    <card value="100">100</card>
+    <card value="?">?</card>
+    <card value="coffee"><img class="coffee" src="images/coffee.png" /></card>
+  </div>
+
   <ul>
     <li ng-repeat="user in room.users">
       {{user.id}}
     </li>
   </ul>
 </div>
-
