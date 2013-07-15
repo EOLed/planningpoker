@@ -7,7 +7,7 @@ angular.module('planningPokerApp')
 
     $scope.hostRoom = function () {
       var randomHex = randomHexService.generate(1000000);
-      var onsuccess = function (data, status, headers, config) {
+      var onsuccess = function () { //data, status, headers, config) {
         $location.url('/room/' + randomHex);
       };
 

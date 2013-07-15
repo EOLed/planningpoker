@@ -6,7 +6,7 @@ angular.module('planningPokerApp')
       $scope.room = data.room;
     };
 
-    var onsuccess = function (data, status, headers, config) {
+    var onsuccess = function (data) { //, status, headers, config) {
       var eventName = 'message ' + data.key;
       socket.forward(eventName, $scope);
       $scope.room = data;
