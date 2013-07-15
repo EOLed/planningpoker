@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('planningPokerApp')
-  .controller('FindRoomCtrl', function ($scope, $http, $location, randomHexService) {
+  .controller('FindRoomCtrl', function ($scope, $http, $location, randomHexService, userService) {
     $scope.slug = '';
     $scope.slugPattern = /^[0-9A-F]+$/;
 
@@ -11,7 +11,7 @@ angular.module('planningPokerApp')
         $location.url('/room/' + randomHex);
       };
 
-      $http.post('/room', { slug: randomHex }).success(onsuccess);
+      $http.post('/room', { slug: randomHex, host: userService.getUser() }).success(onsuccess);
     };
 
     $scope.join = function (slug) {
