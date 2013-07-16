@@ -40,6 +40,10 @@ angular.module('planningPokerApp')
       for (var i = 0; i < $scope.deck.cards.length; i++) {
         var cardInDeck = $scope.deck.cards[i];
         cardInDeck.selected = card.value === cardInDeck.value;
+
+        if (cardInDeck.selected) {
+          $scope.userSelection = cardInDeck;
+        }
       }
     };
 

@@ -89,6 +89,11 @@ describe('Controller: RoomCtrl', function () {
           expect(cardInDeck.selected).toEqual( cardInDeck.value === '5');
         }
       });
+
+      it('should store user selection in scope', function () {
+        scope.selectCard({ display: '40', value: '40' });
+        expect(scope.userSelection).toEqual({ selected: true, display: '40', value: '40' });
+      });
     });
 
 

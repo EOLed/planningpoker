@@ -26,7 +26,9 @@
     <div class="row user-actions">
       <div class="span12">
         <div class="pull-right">
-          <button class="btn btn-large btn-primary" type="button">Commit</button>
+          <button class="btn btn-large btn-primary"
+                  type="button"
+                  ng-disabled="!userSelection">Commit</button>
           <button class="btn btn-large" type="button">Reset</button>
         </div>
       </div>
