@@ -274,6 +274,20 @@ module.exports = function (grunt) {
           ]
         }
       }
+    },
+    recess: {
+      options: {
+        compile: true
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>/styles',
+          src: '{,*/}*.less',
+          dest: '<%= yeoman.app %>/styles/',
+          ext: '.css'
+        }]
+      }
     }
   });
 
@@ -298,7 +312,7 @@ module.exports = function (grunt) {
     'karma'
   ]);
 
-  grunt.registerTask('build', [
+  grunt.registerTask('production', [
     'clean:dist',
     'useminPrepare',
     'concurrent:dist',
@@ -310,6 +324,10 @@ module.exports = function (grunt) {
     'uglify',
     'rev',
     'usemin'
+  ]);
+
+  grunt.registerTask('build', [
+    'recess'
   ]);
 
   grunt.registerTask('default', [
