@@ -96,7 +96,6 @@ describe('Controller: RoomCtrl', function () {
       });
     });
 
-
     describe('User has successfully joined room', function () {
       beforeEach(function () {
         RoomCtrl = createController();

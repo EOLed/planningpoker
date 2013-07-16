@@ -23,21 +23,21 @@
   </div>
 
   <div class="container">
-    <div class="row user-actions">
-      <div class="span12">
-        <div class="pull-right">
-          <button class="btn btn-large btn-primary"
-                  type="button"
-                  ng-disabled="!userSelection">Commit</button>
-          <button class="btn btn-large" type="button">Reset</button>
-        </div>
+    <div class="row room-details">
+      <div class="span9">
+        <ul class="user-list">
+          <li ng-repeat="user in room.users">
+            {{user.id}}
+            <span ng-bind="user.status" ng-show="user.status == 'committed'"></span>
+          </li>
+        </ul>
+      </div>
+      <div class="span3 room-actions">
+        <button class="btn btn-large btn-primary"
+                type="button"
+                ng-disabled="!userSelection">Commit</button>
+        <button class="btn btn-large" type="button">Reset</button>
       </div>
     </div>
   </div>
-
-  <ul>
-    <li ng-repeat="user in room.users">
-      {{user.id}}
-    </li>
-  </ul>
 </div>
