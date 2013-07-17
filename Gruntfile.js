@@ -305,7 +305,7 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask('test', [
+  grunt.registerTask('t', [
     'jshint',
     'clean:server',
     'concurrent:test',
@@ -332,7 +332,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('default', [
-    'test',
+    't',
     'build'
   ]);
 };
