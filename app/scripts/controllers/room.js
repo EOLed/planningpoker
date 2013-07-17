@@ -21,19 +21,7 @@ angular.module('planningPokerApp')
 
     var onJoin = function (data) {
       $scope.room = data.room;
-    };
-
-    var onsuccess = function (data) { //, status, headers, config) {
-      var eventName = 'message ' + data.key;
-      socket.forward(eventName, $scope);
-      $scope.room = data;
       $scope.deck = deck;
-
-      $scope.$on('socket:' + eventName, function (event, data) {
-        if ( data.type === 'join') {
-          onJoin(data);
-        }
-      });
     };
 
     $scope.selectCard = function (card) {
@@ -47,6 +35,15 @@ angular.module('planningPokerApp')
       }
     };
 
+    socket.forward('message', $scope);
+    $scope.$on('socket:message', function (event, data) {
+      if (data.type === 'join') {
+        onJoin(data);
+      } else if (data.type === 'joinAccepted') {
+        onJoin(data);
+      }
+    });
+
     // $scope.commit = function () {
     //   socket.emit('message ' + $scope.room.key,
     //               { type: 'commit',
@@ -55,6 +52,5 @@ angular.module('planningPokerApp')
     //                 value: $scope.userSelection.value });
     // };
 
-    $http.put('/room/join/' + $routeParams.slug, { user: userService.getUser() })
-         .success(onsuccess);
+    socket.emit('message', { type: 'join', slug: $routeParams.slug, user: userService.getUser() });
   });

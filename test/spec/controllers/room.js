@@ -1,3 +1,4 @@
+/*jshint camelcase: false*/
 /*global sinon: false, describe: false, beforeEach: false, inject: false, it: false, expect: false*/
 'use strict';
 
@@ -56,62 +57,53 @@ describe('Controller: RoomCtrl', function () {
                           value: 'coffee' } ] };
     });
 
-    it('should attach current room to scope', function () {
-      RoomCtrl = createController();
-      $httpBackend.flush();
-      expect(scope.room).toEqual(selectedRoom);
+    describe('when successfully joined', function () {
+      beforeEach(function () {
+        RoomCtrl = createController();
+        scope.$broadcast('socket:message', { type: 'joinAccepted', room: selectedRoom });
+      });
+
+      it('should attach current room to scope', function () {
+        expect(scope.room).toEqual(selectedRoom);
+      });
+
+      it('should filter out unsupported/irrelevant messages', function () {
+        scope.$broadcast('socket:message', { type: 'thisiscrazy', room: { crazyroom: 'whatonearth' } });
+        expect(scope.room).toEqual(selectedRoom);
+      });
+
+      it('should update scope.room when a new user has joined', function() {
+        scope.$broadcast('socket:message', { type: 'join', room: { mydata: 'test' } });
+        expect(scope.room).toEqual({ mydata: 'test' });
+      });
+
+      describe('Deck', function () {
+        it('should attach a deck of mountain goat cards to scope', function () {
+          expect(scope.deck).toEqual(deck);
+        });
+
+        it('should only have one selected card at a time', function () {
+          scope.selectCard({ display: '5', value: '5' });
+          for (var i = 0; i < scope.deck.cards.length; i++) {
+            var cardInDeck = scope.deck.cards[i];
+            expect(cardInDeck.selected).toEqual( cardInDeck.value === '5');
+          }
+        });
+
+        it('should store user selection in scope', function () {
+          scope.selectCard({ display: '40', value: '40' });
+          expect(scope.userSelection).toEqual({ selected: true, display: '40', value: '40' });
+        });
+      });
     });
 
     it('should forward room specific socket calls to scope', function () {
       var mockSocket = sinon.mock(socket)
                             .expects('forward')
-                            .withArgs('message thisistheroomkey', scope)
+                            .withArgs('message', scope)
                             .once();
       RoomCtrl = createController();
-      $httpBackend.flush();
       mockSocket.verify();
-    });
-
-    describe('Deck', function () {
-      beforeEach(function () {
-        RoomCtrl = createController();
-        $httpBackend.flush();
-      });
-
-      it('should attach a deck of mountain goat cards to scope', function () {
-        expect(scope.deck).toEqual(deck);
-      });
-
-      it('should only have one selected card at a time', function () {
-        scope.selectCard({ display: '5', value: '5' });
-        for (var i = 0; i < scope.deck.cards.length; i++) {
-          var cardInDeck = scope.deck.cards[i];
-          expect(cardInDeck.selected).toEqual( cardInDeck.value === '5');
-        }
-      });
-
-      it('should store user selection in scope', function () {
-        scope.selectCard({ display: '40', value: '40' });
-        expect(scope.userSelection).toEqual({ selected: true, display: '40', value: '40' });
-      });
-    });
-
-    describe('User has successfully joined room', function () {
-      beforeEach(function () {
-        RoomCtrl = createController();
-        $httpBackend.flush();
-      });
-
-      it('should filter out unsupported/irrelevant messages', function () {
-        // temporary functionality
-        scope.$broadcast('socket:message thisistheroomkey', { test: 'data' });
-        expect(scope.room).toEqual(selectedRoom);
-      });
-
-      it('should update scope.room when a new user has joined', function() {
-        scope.$broadcast('socket:message thisistheroomkey', { type: 'join', room: { mydata: 'test' } });
-        expect(scope.room).toEqual({ mydata: 'test' });
-      });
     });
   });
 });
