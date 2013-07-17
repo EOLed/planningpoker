@@ -2,7 +2,10 @@
   <div class="container">
     <div class="row">
       <div class="span12">
-        <h1>Planning Poker <small>Room: {{room.slug}}</small></h1>
+        <h1>
+          <a ng-href="{{hash}}/">Planning Poker</a>
+          <small>Room: <a ng-href="{{hash}}/room/{{room.slug}}">{{room.slug}}</a></small>
+        </h1>
       </div>
     </div>
   </div>
@@ -35,6 +38,7 @@
       <div class="span3 room-actions">
         <button class="btn btn-large btn-primary"
                 type="button"
+                ng-click="commit()"
                 ng-disabled="!userSelection">Commit</button>
         <button class="btn btn-large" type="button">Reset</button>
       </div>
