@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('planningPokerApp')
-  .controller('FindRoomCtrl', function ($scope, $http, $location, randomHexService, userService) {
+  .controller('FindRoomCtrl', function ($scope, $http, $location, randomHexService, userService, socket) {
+    socket.emit('connected', { user: userService.getUser() });
     $scope.slug = '';
     $scope.slugPattern = /^[0-9A-F]+$/;
 

@@ -47,13 +47,13 @@ angular.module('planningPokerApp')
       }
     };
 
-    $scope.commit = function () {
-      socket.emit('message ' + $scope.room.key,
-                  { type: 'commit',
-                    room: $scope.room,
-                    user: userService.getUser(),
-                    value: $scope.userSelection.value });
-    };
+    // $scope.commit = function () {
+    //   socket.emit('message ' + $scope.room.key,
+    //               { type: 'commit',
+    //                 room: $scope.room,
+    //                 user: userService.getUser(),
+    //                 value: $scope.userSelection.value });
+    // };
 
     $http.put('/room/join/' + $routeParams.slug, { user: userService.getUser() })
          .success(onsuccess);
