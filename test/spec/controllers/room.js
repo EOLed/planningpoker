@@ -17,7 +17,7 @@ describe('Controller: RoomCtrl', function () {
         $httpBackend = _$httpBackend_;
         $routeParams = _$routeParams_;
         socket = _socket_;
-        $routeParams.slug = 'e3421';
+        $routeParams.slug = 'dummyslug';
         userService = _userService_;
         createController = function () {
           return $controller('RoomCtrl', { $scope: scope });
@@ -32,13 +32,12 @@ describe('Controller: RoomCtrl', function () {
     beforeEach(function () {
       currentUser = { username: 'achan' };
       sinon.stub(userService, 'getUser').returns(currentUser);
-      selectedRoom = { slug: 'e3421',
-                       key: 'thisistheroomkey',
+      selectedRoom = { slug: 'dummyslug',
                        users: [{ username: 'achan', voter: true },
                                { username: 'vsharma', voter: true },
                                { username: 'drivet', voter: true },
                                { username: 'paul', voter: false }] };
-      $httpBackend.expectPUT('/room/join/e3421', { user: currentUser }).respond(200, selectedRoom);
+      $httpBackend.expectPUT('/room/join/dummyslug', { user: currentUser }).respond(200, selectedRoom);
       deck = { type: 'mountainGoat',
                cards: [ { selected: false, display: '0', value: '0' },
                         { selected: false, display: '&frac12;', value: '.5' },
@@ -60,7 +59,9 @@ describe('Controller: RoomCtrl', function () {
     describe('when successfully joined', function () {
       beforeEach(function () {
         RoomCtrl = createController();
-        scope.$broadcast('socket:message', { type: 'joinAccepted', room: selectedRoom });
+        scope.$broadcast('socket:message', { type: 'joinAccepted',
+                                             slug: 'dummyslug',
+                                             room: selectedRoom });
       });
 
       it('should attach current room to scope', function () {
@@ -68,12 +69,23 @@ describe('Controller: RoomCtrl', function () {
       });
 
       it('should filter out unsupported/irrelevant messages', function () {
-        scope.$broadcast('socket:message', { type: 'thisiscrazy', room: { crazyroom: 'whatonearth' } });
+        scope.$broadcast('socket:message', { type: 'thisiscrazy',
+                                             slug: 'dummyslug',
+                                             room: { crazyroom: 'whatonearth' } });
+        expect(scope.room).toEqual(selectedRoom);
+      });
+
+      it('should filter out messages from other rooms', function () {
+        scope.$broadcast('socket:message', { type: 'joinAccepted',
+                                             slug: 'nobelongtoyou',
+                                             room: { crazyroom: 'whatonearth' } });
         expect(scope.room).toEqual(selectedRoom);
       });
 
       it('should update scope.room when a new user has joined', function() {
-        scope.$broadcast('socket:message', { type: 'join', room: { mydata: 'test' } });
+        scope.$broadcast('socket:message', { type: 'join',
+                                             slug: 'dummyslug',
+                                             room: { mydata: 'test' } });
         expect(scope.room).toEqual({ mydata: 'test' });
       });
 

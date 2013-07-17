@@ -37,6 +37,10 @@ angular.module('planningPokerApp')
 
     socket.forward('message', $scope);
     $scope.$on('socket:message', function (event, data) {
+      if (data.slug !== $routeParams.slug) {
+        return;
+      }
+
       if (data.type === 'join') {
         onJoin(data);
       } else if (data.type === 'joinAccepted') {
