@@ -158,6 +158,12 @@ describe('Controller: RoomCtrl', function () {
         it('should set user selection as committed', function () {
           expect(scope.userSelection.committed).toBeTruthy();
         });
+
+        it('should ignore card selection', function () {
+          scope.selectCard({ value: '2' });
+          expect(scope.userSelection.value).toEqual('1');
+        });
+
       });
 
       describe('Deck', function () {

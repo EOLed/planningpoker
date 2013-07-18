@@ -28,6 +28,15 @@ angular.module('planningPokerApp')
       $scope.room = data.room;
     };
 
+    var getUserInRoom = function (userId) {
+      for (var i = 0; i < $scope.room.users.length; i++) {
+        var currentUser = $scope.room.users[i];
+        if (currentUser.id === userId) {
+          return currentUser;
+        }
+      }
+    };
+
     var dispatchMessage = function (data) {
       if (data.type === 'join') {
         onJoin(data);
@@ -39,6 +48,10 @@ angular.module('planningPokerApp')
     };
 
     $scope.selectCard = function (card) {
+      if ($scope.userSelection.committed) {
+        return;
+      }
+
       for (var i = 0; i < $scope.deck.cards.length; i++) {
         var cardInDeck = $scope.deck.cards[i];
         cardInDeck.selected = card.value === cardInDeck.value;
@@ -59,14 +72,9 @@ angular.module('planningPokerApp')
     });
 
     $scope.commit = function () {
-      for (var i = 0; i < $scope.room.users.length; i++) {
-        var currentUser = $scope.room.users[i];
-        if (currentUser.id === userService.getUser().id) {
-          currentUser.status.type = 'committed';
-          currentUser.status.value = $scope.userSelection.value;
-          break;
-        }
-      }
+      var user = getUserInRoom(userService.getUser().id);
+      user.status.type = 'committed';
+      user.status.value = $scope.userSelection.value;
 
       $scope.userSelection.committed = true;
 
@@ -76,7 +84,7 @@ angular.module('planningPokerApp')
                                value: $scope.userSelection.value });
     };
 
-    $scope.committed = false;
+    $scope.userSelection = { committed: false };
 
     socket.emit('message', { type: 'join',
                              slug: $routeParams.slug,
