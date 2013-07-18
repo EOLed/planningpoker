@@ -62,22 +62,23 @@ angular.module('planningPokerApp')
       for (var i = 0; i < $scope.room.users.length; i++) {
         var currentUser = $scope.room.users[i];
         if (currentUser.id === userService.getUser().id) {
-          currentUser.status = 'committed';
-          currentUser.value = $scope.userSelection.value;
+          currentUser.status.type = 'committed';
+          currentUser.status.value = $scope.userSelection.value;
           break;
         }
       }
 
       $scope.userSelection.committed = true;
 
-      socket.emit('message',
-                  { type: 'commit',
-                    room: $scope.room,
-                    user: userService.getUser(),
-                    value: $scope.userSelection.value });
+      socket.emit('message', { type: 'commit',
+                               room: $scope.room,
+                               user: userService.getUser(),
+                               value: $scope.userSelection.value });
     };
 
     $scope.committed = false;
 
-    socket.emit('message', { type: 'join', slug: $routeParams.slug, user: userService.getUser() });
+    socket.emit('message', { type: 'join',
+                             slug: $routeParams.slug,
+                             user: userService.getUser() });
   });

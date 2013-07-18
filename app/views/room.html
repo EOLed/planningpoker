@@ -32,7 +32,7 @@
           <li ng-repeat="user in room.users">
             <i class="icon-user"></i>
             {{user.id}}
-            <i class="icon-ok" ng-show="user.status == 'committed'"></i>
+            <i class="icon-ok" ng-show="user.status.type == 'committed'"></i>
           </li>
         </ul>
       </div>

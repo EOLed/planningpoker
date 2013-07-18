@@ -30,13 +30,25 @@ describe('Controller: RoomCtrl', function () {
     var selectedRoom, currentUser, deck;
 
     beforeEach(function () {
-      currentUser = { id: 1234, username: 'achan', voter: true };
+      currentUser = { id: 1234, username: 'achan', type: 'voter', status: { type: 'active' } };
       sinon.stub(userService, 'getUser').returns(currentUser);
       selectedRoom = { slug: 'dummyslug',
-                       users: [{ id: 1234, username: 'achan', voter: true },
-                               { id: 42, username: 'vsharma', voter: true },
-                               { id: 523, username: 'drivet', voter: true },
-                               { id: 432432, username: 'paul', voter: false }] };
+                       users: [{ id: 1234,
+                                 username: 'achan',
+                                 type: 'voter',
+                                 status: { type: 'active' } },
+                               { id: 2321,
+                                 username: 'vsharma',
+                                 type: 'voter',
+                                 status: { type: 'active' } },
+                               { id: 29,
+                                 username: 'drivet',
+                                 type: 'voter',
+                                 status: { type: 'active' } },
+                               { id: 241,
+                                 username: 'pcar',
+                                 type: 'voter',
+                                 status: { type: 'active' } } ] };
 
       deck = { type: 'mountainGoat',
                cards: [ { selected: false, display: '0', value: '0' },
@@ -68,7 +80,9 @@ describe('Controller: RoomCtrl', function () {
     it('should send request to join current room', function () {
       var mockSocket = sinon.mock(socket)
                             .expects('emit')
-                            .withArgs('message', { type: 'join', slug: 'dummyslug', user: currentUser })
+                            .withArgs('message', { type: 'join',
+                                                   slug: 'dummyslug',
+                                                   user: currentUser })
                             .once();
       RoomCtrl = createController();
       mockSocket.verify();
@@ -138,8 +152,7 @@ describe('Controller: RoomCtrl', function () {
             }
           }
 
-          expect(userInRoom.value).toEqual('1');
-          expect(userInRoom.status).toEqual('committed');
+          expect(userInRoom.status).toEqual({ type: 'committed', value: '1' });
         });
 
         it('should set user selection as committed', function () {
