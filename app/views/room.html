@@ -30,8 +30,9 @@
       <div class="span9">
         <ul class="user-list">
           <li ng-repeat="user in room.users">
+            <i class="icon-user"></i>
             {{user.id}}
-            <span ng-bind="user.status" ng-show="user.status == 'committed'"></span>
+            <i class="icon-ok" ng-show="user.status == 'committed'"></i>
           </li>
         </ul>
       </div>
