@@ -24,6 +24,20 @@ angular.module('planningPokerApp')
       $scope.deck = deck;
     };
 
+    var onCommit = function (data) {
+      $scope.room = data.room;
+    };
+
+    var dispatchMessage = function (data) {
+      if (data.type === 'join') {
+        onJoin(data);
+      } else if (data.type === 'joinAccepted') {
+        onJoin(data);
+      } else if (data.type === 'commit') {
+        onCommit(data);
+      }
+    };
+
     $scope.selectCard = function (card) {
       for (var i = 0; i < $scope.deck.cards.length; i++) {
         var cardInDeck = $scope.deck.cards[i];
@@ -36,25 +50,30 @@ angular.module('planningPokerApp')
     };
 
     socket.forward('message', $scope);
-    $scope.$on('socket:message', function (event, data) {
-      if (data.slug !== $routeParams.slug) {
+    $scope.$on('socket:message', function (event, message) {
+      if (message.slug !== $routeParams.slug) {
         return;
       }
 
-      if (data.type === 'join') {
-        onJoin(data);
-      } else if (data.type === 'joinAccepted') {
-        onJoin(data);
-      }
+      dispatchMessage(message);
     });
 
-    // $scope.commit = function () {
-    //   socket.emit('message ' + $scope.room.key,
-    //               { type: 'commit',
-    //                 room: $scope.room,
-    //                 user: userService.getUser(),
-    //                 value: $scope.userSelection.value });
-    // };
+    $scope.commit = function () {
+      for (var i = 0; i < $scope.room.users.length; i++) {
+        var currentUser = $scope.room.users[i];
+        if (currentUser.id === userService.getUser().id) {
+          currentUser.status = 'committed';
+          currentUser.value = $scope.userSelection.value;
+          break;
+        }
+      }
+
+      socket.emit('message',
+                  { type: 'commit',
+                    room: $scope.room,
+                    user: userService.getUser(),
+                    value: $scope.userSelection.value });
+    };
 
     socket.emit('message', { type: 'join', slug: $routeParams.slug, user: userService.getUser() });
   });

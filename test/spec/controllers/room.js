@@ -1,5 +1,5 @@
 /*jshint camelcase: false*/
-/*global sinon: false, describe: false, beforeEach: false, inject: false, it: false, expect: false*/
+/*global spyOn: false, sinon: false, describe: false, beforeEach: false, inject: false, it: false, expect: false*/
 'use strict';
 
 describe('Controller: RoomCtrl', function () {
@@ -30,14 +30,14 @@ describe('Controller: RoomCtrl', function () {
     var selectedRoom, currentUser, deck;
 
     beforeEach(function () {
-      currentUser = { username: 'achan' };
+      currentUser = { id: 1234, username: 'achan', voter: true };
       sinon.stub(userService, 'getUser').returns(currentUser);
       selectedRoom = { slug: 'dummyslug',
-                       users: [{ username: 'achan', voter: true },
-                               { username: 'vsharma', voter: true },
-                               { username: 'drivet', voter: true },
-                               { username: 'paul', voter: false }] };
-      $httpBackend.expectPUT('/room/join/dummyslug', { user: currentUser }).respond(200, selectedRoom);
+                       users: [{ id: 1234, username: 'achan', voter: true },
+                               { id: 42, username: 'vsharma', voter: true },
+                               { id: 523, username: 'drivet', voter: true },
+                               { id: 432432, username: 'paul', voter: false }] };
+
       deck = { type: 'mountainGoat',
                cards: [ { selected: false, display: '0', value: '0' },
                         { selected: false, display: '&frac12;', value: '.5' },
@@ -54,6 +54,24 @@ describe('Controller: RoomCtrl', function () {
                         { selected: false,
                           display: '<img class="coffee" src="images/coffee.png" />',
                           value: 'coffee' } ] };
+    });
+
+    it('should forward room specific socket calls to scope', function () {
+      var mockSocket = sinon.mock(socket)
+                            .expects('forward')
+                            .withArgs('message', scope)
+                            .once();
+      RoomCtrl = createController();
+      mockSocket.verify();
+    });
+
+    it('should send request to join current room', function () {
+      var mockSocket = sinon.mock(socket)
+                            .expects('emit')
+                            .withArgs('message', { type: 'join', slug: 'dummyslug', user: currentUser })
+                            .once();
+      RoomCtrl = createController();
+      mockSocket.verify();
     });
 
     describe('when successfully joined', function () {
@@ -89,6 +107,42 @@ describe('Controller: RoomCtrl', function () {
         expect(scope.room).toEqual({ mydata: 'test' });
       });
 
+      it('should update scope.room when a user has committed estimate', function() {
+        scope.$broadcast('socket:message', { type: 'commit',
+                                             slug: 'dummyslug',
+                                             room: { mydata: 'test' } });
+        expect(scope.room).toEqual({ mydata: 'test' });
+      });
+
+      describe('committing estimate', function () {
+        beforeEach(function () {
+          spyOn(socket, 'emit');
+          scope.userSelection = { display: '1', value: '1' };
+          scope.commit();
+        });
+
+        it('should emit a message to the server', function () {
+          expect(socket.emit).toHaveBeenCalledWith('message', { type: 'commit',
+                                                                room: selectedRoom,
+                                                                user: currentUser,
+                                                                value: '1' });
+        });
+
+        it('should update local room with committed value', function () {
+          var userInRoom;
+
+          for (var i = 0; i < selectedRoom.users.length; i++) {
+            if (selectedRoom.users[i].id === 1234) {
+              userInRoom = selectedRoom.users[i];
+              break;
+            }
+          }
+
+          expect(userInRoom.value).toEqual('1');
+          expect(userInRoom.status).toEqual('committed');
+        });
+      });
+
       describe('Deck', function () {
         it('should attach a deck of mountain goat cards to scope', function () {
           expect(scope.deck).toEqual(deck);
@@ -107,15 +161,6 @@ describe('Controller: RoomCtrl', function () {
           expect(scope.userSelection).toEqual({ selected: true, display: '40', value: '40' });
         });
       });
-    });
-
-    it('should forward room specific socket calls to scope', function () {
-      var mockSocket = sinon.mock(socket)
-                            .expects('forward')
-                            .withArgs('message', scope)
-                            .once();
-      RoomCtrl = createController();
-      mockSocket.verify();
     });
   });
 });

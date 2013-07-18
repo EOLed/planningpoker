@@ -1,3 +1,4 @@
+/*jshint camelcase: false*/
 /*global sinon: false, describe: false, beforeEach: false, inject: false, it: false, expect: false*/
 'use strict';
 
@@ -10,7 +11,8 @@ describe('Controller: FindRoomCtrl', function () {
   // Initialize the controller and a mock scope
   beforeEach(
     inject(
-      function ($controller, $rootScope, _randomHexService_, _$httpBackend_, _$location_, _userService_) {
+      function ($controller, $rootScope, _randomHexService_, _$httpBackend_, _$location_,
+                _userService_) {
         scope = $rootScope.$new();
         FindRoomCtrl = $controller('FindRoomCtrl', { $scope: scope });
         $httpBackend = _$httpBackend_;
