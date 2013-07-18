@@ -115,6 +115,16 @@ angular.module('planningPokerApp')
       return true;
     };
 
+    $scope.restart = function () {
+      if ($scope.isHost()) {
+        socket.emit('message', { type: 'restart', room: $scope.room });
+      }
+    };
+
+    $scope.isHost = function () {
+      return $scope.room.host.id === userService.getUser().id;
+    };
+
     socket.emit('message', { type: 'join',
                              slug: $routeParams.slug,
                              user: userService.getUser() });

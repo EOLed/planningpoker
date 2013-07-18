@@ -42,7 +42,10 @@
                 type="button"
                 ng-click="commit()"
                 ng-disabled="!userSelection || userSelection.committed">Commit</button>
-        <button class="btn btn-large" type="button">Reset</button>
+        <button ng-show="isHost()"
+                ng-click="restart()"
+                class="btn btn-large"
+                type="button">Restart</button>
       </div>
     </div>
   </div>

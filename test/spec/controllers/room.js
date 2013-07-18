@@ -33,6 +33,7 @@ describe('Controller: RoomCtrl', function () {
       currentUser = { id: 1234, username: 'achan', type: 'voter', status: { type: 'active' } };
       sinon.stub(userService, 'getUser').returns(currentUser);
       selectedRoom = { slug: 'dummyslug',
+                       host: currentUser,
                        users: [{ id: 1234,
                                  username: 'achan',
                                  type: 'voter',
@@ -239,6 +240,24 @@ describe('Controller: RoomCtrl', function () {
           expect(scope.userSelection.value).toEqual('1');
         });
 
+      });
+
+      describe('restarting poker round', function () {
+        beforeEach(function () {
+          spyOn(socket, 'emit');
+        });
+
+        it('should emit restart message through socket if you are host', function () {
+          scope.restart();
+          expect(socket.emit).toHaveBeenCalledWith('message', { type: 'restart',
+                                                                room: selectedRoom });
+        });
+
+        it('should not emit restart message through socket if you are not host', function () {
+          scope.room.host = { id: 'notyou' };
+          scope.restart();
+          expect(socket.emit).not.toHaveBeenCalled();
+        });
       });
 
       describe('Deck', function () {
