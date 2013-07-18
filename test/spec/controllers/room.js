@@ -106,6 +106,63 @@ describe('Controller: RoomCtrl', function () {
       });
     });
 
+    describe('when querying if all committed', function () {
+      it('should return true if all voters in room have committed', function () {
+        var room  = { slug: 'dummyslug',
+                      users: [{ id: 1234,
+                                username: 'achan',
+                                type: 'voter',
+                                status: { type: 'committed', value: '1' } },
+                              { id: 2412,
+                                username: 'vsharma',
+                                type: 'observer',
+                                status: { type: 'active' } },
+                              { id: 241,
+                                username: 'pcar',
+                                type: 'voter',
+                                status: { type: 'committed', value: '2' } } ] };
+        RoomCtrl = createController();
+        scope.$broadcast('socket:message', { type: 'joinAccepted',
+                                             slug: 'dummyslug',
+                                             room: room });
+        expect(scope.allCommitted()).toBeTruthy();
+      });
+
+      it('should return true if all voters in room have committed', function () {
+        var room  = { slug: 'dummyslug',
+                      users: [{ id: 1234,
+                                username: 'achan',
+                                type: 'voter',
+                                status: { type: 'committed', value: '1' } },
+                              { id: 241,
+                                username: 'pcar',
+                                type: 'voter',
+                                status: { type: 'committed', value: '2' } } ] };
+        RoomCtrl = createController();
+        scope.$broadcast('socket:message', { type: 'joinAccepted',
+                                             slug: 'dummyslug',
+                                             room: room });
+        expect(scope.allCommitted()).toBeTruthy();
+      });
+
+      it('should return false if all not voters in room have committed', function () {
+        var room  = { slug: 'dummyslug',
+                      users: [{ id: 1234,
+                                username: 'achan',
+                                type: 'voter',
+                                status: { type: 'committed', value: '1' } },
+                              { id: 241,
+                                username: 'pcar',
+                                type: 'voter',
+                                status: { type: 'active' } } ] };
+        RoomCtrl = createController();
+        scope.$broadcast('socket:message', { type: 'joinAccepted',
+                                             slug: 'dummyslug',
+                                             room: room });
+        expect(scope.allCommitted()).toBeFalsy();
+      });
+    });
+
     describe('when successfully joined', function () {
       beforeEach(function () {
         RoomCtrl = createController();

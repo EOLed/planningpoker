@@ -33,6 +33,7 @@
             <i class="icon-user"></i>
             {{user.id}}
             <i class="icon-ok" ng-show="user.status.type == 'committed'"></i>
+            <span ng-bind="user.status.value" ng-show="allCommitted()" />
           </li>
         </ul>
       </div>
