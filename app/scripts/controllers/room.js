@@ -24,6 +24,17 @@ angular.module('planningPokerApp')
       $scope.deck = deck;
     };
 
+    var onJoinAccepted = function (data) {
+      onJoin(data);
+
+      var userInRoom = getUserInRoom(userService.getUser().id);
+      if (userInRoom.status.type === 'committed') {
+        var selectedCardValue = userInRoom.status.value;
+        $scope.userSelection = { committed: true, value: selectedCardValue };
+        getCardInDeck(selectedCardValue).selected = true;
+      }
+    };
+
     var onCommit = function (data) {
       $scope.room = data.room;
     };
@@ -37,11 +48,20 @@ angular.module('planningPokerApp')
       }
     };
 
+    var getCardInDeck = function (value) {
+      for (var i = 0; i < $scope.deck.cards.length; i++) {
+        var cardInDeck = $scope.deck.cards[i];
+        if (cardInDeck.value === value) {
+          return cardInDeck;
+        }
+      }
+    };
+
     var dispatchMessage = function (data) {
       if (data.type === 'join') {
         onJoin(data);
       } else if (data.type === 'joinAccepted') {
-        onJoin(data);
+        onJoinAccepted(data);
       } else if (data.type === 'commit') {
         onCommit(data);
       }

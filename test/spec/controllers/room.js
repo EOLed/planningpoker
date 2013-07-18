@@ -88,6 +88,24 @@ describe('Controller: RoomCtrl', function () {
       mockSocket.verify();
     });
 
+    describe('when joining room previously joined', function () {
+      beforeEach(function () {
+        selectedRoom.users[0].status = { type: 'committed', value: '1' };
+        RoomCtrl = createController();
+        scope.$broadcast('socket:message', { type: 'joinAccepted',
+                                             slug: 'dummyslug',
+                                             room: selectedRoom });
+      });
+
+      it('should update selected card from deck with values from scope', function () {
+        expect(scope.deck.cards[2].selected).toBeTruthy();
+      });
+
+      it('should update user selection with values from scope', function () {
+        expect(scope.userSelection).toEqual({ committed: true, value: '1' });
+      });
+    });
+
     describe('when successfully joined', function () {
       beforeEach(function () {
         RoomCtrl = createController();
