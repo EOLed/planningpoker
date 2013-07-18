@@ -44,7 +44,7 @@ angular.module('planningPokerApp')
         cardInDeck.selected = card.value === cardInDeck.value;
 
         if (cardInDeck.selected) {
-          $scope.userSelection = cardInDeck;
+          $scope.userSelection = { value: cardInDeck.value, committed: false };
         }
       }
     };
@@ -68,12 +68,16 @@ angular.module('planningPokerApp')
         }
       }
 
+      $scope.userSelection.committed = true;
+
       socket.emit('message',
                   { type: 'commit',
                     room: $scope.room,
                     user: userService.getUser(),
                     value: $scope.userSelection.value });
     };
+
+    $scope.committed = false;
 
     socket.emit('message', { type: 'join', slug: $routeParams.slug, user: userService.getUser() });
   });

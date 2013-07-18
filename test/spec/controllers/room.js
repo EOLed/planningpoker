@@ -141,6 +141,10 @@ describe('Controller: RoomCtrl', function () {
           expect(userInRoom.value).toEqual('1');
           expect(userInRoom.status).toEqual('committed');
         });
+
+        it('should set user selection as committed', function () {
+          expect(scope.userSelection.committed).toBeTruthy();
+        });
       });
 
       describe('Deck', function () {
@@ -158,7 +162,7 @@ describe('Controller: RoomCtrl', function () {
 
         it('should store user selection in scope', function () {
           scope.selectCard({ display: '40', value: '40' });
-          expect(scope.userSelection).toEqual({ selected: true, display: '40', value: '40' });
+          expect(scope.userSelection).toEqual({ value: '40', committed: false });
         });
       });
     });

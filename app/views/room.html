@@ -39,7 +39,7 @@
         <button class="btn btn-large btn-primary"
                 type="button"
                 ng-click="commit()"
-                ng-disabled="!userSelection">Commit</button>
+                ng-disabled="!userSelection || userSelection.committed">Commit</button>
         <button class="btn btn-large" type="button">Reset</button>
       </div>
     </div>
