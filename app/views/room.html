@@ -31,7 +31,8 @@
         <ul class="user-list">
           <li ng-repeat="user in room.users">
             <i class="icon-user"></i>
-            {{user.id}}
+            {{getDisplayName(user)}}
+            <span ng-show="isMe(user)">(me)</span>
             <i class="icon-check-sign" ng-show="user.status.type == 'committed'"></i>
             <i class="icon-check-empty" ng-show="user.status.type != 'committed'"></i>
             <span ng-bind="user.status.value" ng-show="allCommitted()" />

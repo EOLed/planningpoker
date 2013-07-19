@@ -107,6 +107,33 @@ describe('Controller: RoomCtrl', function () {
       });
     });
 
+    describe('when determining whether the specified user is current user', function () {
+      beforeEach(function () {
+        RoomCtrl = createController();
+      });
+      it('should return true if user id matches', function () {
+        expect(scope.isMe({ id: 1234, username: 'achan' })).toBeTruthy();
+      });
+
+      it('should return false if the user id doesn\'t match', function () {
+        expect(scope.isMe({ id: '4321', username: 'achan' })).toBeFalsy();
+      });
+    });
+
+    describe('when getting user display name', function () {
+      it('should return the user\'s username if defined', function () {
+        RoomCtrl = createController();
+        var displayName = scope.getDisplayName({ id: '1234', username: 'achan' });
+        expect(displayName).toEqual('achan');
+      });
+
+      it('should return the user\'s id if username undefined', function () {
+        RoomCtrl = createController();
+        var displayName = scope.getDisplayName({ id: '1234', wahtever: 'achan' });
+        expect(displayName).toEqual('1234');
+      });
+    });
+
     describe('when querying if all committed', function () {
       it('should return true if all voters in room have committed', function () {
         var room  = { slug: 'dummyslug',

@@ -139,6 +139,14 @@ angular.module('planningPokerApp')
       return $scope.room && $scope.room.host.id === userService.getUser().id;
     };
 
+    $scope.getDisplayName = function (user) {
+      return user.username ? user.username : user.id;
+    };
+
+    $scope.isMe = function (user) {
+      return user.id === userService.getUser().id;
+    };
+
     socket.emit('message', { type: 'join',
                              slug: $routeParams.slug,
                              user: userService.getUser() });
