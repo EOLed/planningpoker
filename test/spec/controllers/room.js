@@ -190,18 +190,57 @@ describe('Controller: RoomCtrl', function () {
         expect(scope.room).toEqual(selectedRoom);
       });
 
-      it('should update scope.room when a new user has joined', function() {
+      it('should update scope.room when a new user has joined', function () {
         scope.$broadcast('socket:message', { type: 'join',
                                              slug: 'dummyslug',
                                              room: { mydata: 'test' } });
         expect(scope.room).toEqual({ mydata: 'test' });
       });
 
-      it('should update scope.room when a user has committed estimate', function() {
+      it('should update scope.room when a user has committed estimate', function () {
         scope.$broadcast('socket:message', { type: 'commit',
                                              slug: 'dummyslug',
                                              room: { mydata: 'test' } });
         expect(scope.room).toEqual({ mydata: 'test' });
+      });
+
+
+      describe('when host restarts round', function () {
+        var restartedRoom;
+        beforeEach(function () {
+          restartedRoom = { slug: 'dummyslug',
+                            host: currentUser,
+                            users: [{ id: 1234,
+                                      username: 'achan',
+                                      type: 'voter',
+                                      status: { type: 'active' } },
+                                    { id: 2321,
+                                      username: 'vsharma',
+                                      type: 'voter',
+                                      status: { type: 'active' } },
+                                    { id: 29,
+                                      username: 'drivet',
+                                      type: 'voter',
+                                      status: { type: 'active' } }] };
+          scope.selectCard({ value: '1' });
+          scope.$broadcast('socket:message', { type: 'restart',
+                                               slug: 'dummyslug',
+                                               room: restartedRoom });
+        });
+
+        it('should update scope when the host invokes a round restart', function () {
+          expect(scope.room).toEqual(restartedRoom);
+        });
+
+        it('should unselect every card', function () {
+          for (var i = 0; i < scope.deck.cards.length; i++) {
+            expect(scope.deck.cards[i].selected).toBeFalsy();
+          }
+        });
+
+        it('should forget user selection', function () {
+          expect(scope.userSelection).toBeUndefined();
+        });
       });
 
       describe('committing estimate', function () {

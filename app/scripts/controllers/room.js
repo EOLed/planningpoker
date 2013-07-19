@@ -39,6 +39,18 @@ angular.module('planningPokerApp')
       $scope.room = data.room;
     };
 
+    var onRestart = function (data) {
+      $scope.room = data.room;
+      resetDeck();
+      $scope.userSelection = undefined;
+    };
+
+    var resetDeck = function () {
+      for (var i = 0; i < $scope.deck.cards.length; i++) {
+        $scope.deck.cards[i].selected = false;
+      }
+    };
+
     var getUserInRoom = function (userId) {
       for (var i = 0; i < $scope.room.users.length; i++) {
         var currentUser = $scope.room.users[i];
@@ -64,6 +76,8 @@ angular.module('planningPokerApp')
         onJoinAccepted(data);
       } else if (data.type === 'commit') {
         onCommit(data);
+      } else if (data.type === 'restart') {
+        onRestart(data);
       }
     };
 
@@ -122,7 +136,7 @@ angular.module('planningPokerApp')
     };
 
     $scope.isHost = function () {
-      return $scope.room.host.id === userService.getUser().id;
+      return $scope.room && $scope.room.host.id === userService.getUser().id;
     };
 
     socket.emit('message', { type: 'join',
