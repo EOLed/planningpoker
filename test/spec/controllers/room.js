@@ -65,7 +65,7 @@ describe('Controller: RoomCtrl', function () {
                         { selected: false, display: '100', value: '100' },
                         { selected: false, display: '?', value: '?' },
                         { selected: false,
-                          display: '<img class="coffee" src="images/coffee.png" />',
+                          display: '<i class="icon-coffee"></i>',
                           value: 'coffee' } ] };
     });
 
