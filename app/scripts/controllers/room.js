@@ -81,6 +81,8 @@ angular.module('planningPokerApp')
       }
     };
 
+    $scope.state = { isEditingUsername: false };
+
     $scope.selectCard = function (card) {
       if ($scope.userSelection && $scope.userSelection.committed) {
         return;
@@ -145,6 +147,15 @@ angular.module('planningPokerApp')
 
     $scope.isMe = function (user) {
       return user.id === userService.getUser().id;
+    };
+
+    $scope.onUsernameClicked = function () {
+      $scope.state.isEditingUsername = true;
+    };
+
+    $scope.onSaveUser = function (user) {
+      userService.setUsername(user.username);
+      $scope.state.isEditingUsername = false;
     };
 
     socket.emit('message', { type: 'join',

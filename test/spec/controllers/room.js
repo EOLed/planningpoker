@@ -199,6 +199,33 @@ describe('Controller: RoomCtrl', function () {
                                              room: selectedRoom });
       });
 
+      it('should initialize username to not editing', function () {
+        expect(scope.state.isEditingUsername).toBeFalsy();
+      });
+
+      describe('when editing username', function () {
+        it('should track when username is being edited', function () {
+          scope.onUsernameClicked();
+          expect(scope.state.isEditingUsername).toBeTruthy();
+        });
+
+        describe('when save clicked', function () {
+          beforeEach(function () {
+            spyOn(userService, 'setUsername');
+            scope.onUsernameClicked();
+            scope.onSaveUser({ username: 'myusername' });
+          });
+
+          it('should track when username is no longer being edited', function () {
+            expect(scope.state.isEditingUsername).toBeFalsy();
+          });
+
+          it('should persist username into userService', function () {
+            expect(userService.setUsername).toHaveBeenCalledWith('myusername');
+          });
+        });
+      });
+
       it('should attach current room to scope', function () {
         expect(scope.room).toEqual(selectedRoom);
       });

@@ -28,18 +28,28 @@ angular.module('planningPokerApp')
       return user;
     };
 
+    var getUser = function () {
+      var user = localStorageService.get('user');
+      if (user) {
+        return populateDefaultValues(JSON.parse(user));
+      }
+
+      user = { id: getRandomUserId(),
+               type: 'voter',
+               status: { type: 'active' } };
+      localStorageService.add('user', JSON.stringify(user));
+      return user;
+    };
+
     var service = {
       getUser: function () {
-        var user = localStorageService.get('user');
-        if (user) {
-          return populateDefaultValues(JSON.parse(user));
-        }
+        return getUser();
+      },
 
-        user = { id: getRandomUserId(),
-                 type: 'voter',
-                 status: { type: 'active' } };
+      setUsername: function (username) {
+        var user = getUser();
+        user.username = username;
         localStorageService.add('user', JSON.stringify(user));
-        return user;
       }
     };
 
