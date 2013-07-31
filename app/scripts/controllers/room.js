@@ -45,6 +45,11 @@ angular.module('planningPokerApp')
       $scope.userSelection = undefined;
     };
 
+    var onNicknameChange = function (data) {
+      var user = getUserInRoom(data.user.id);
+      user.username = data.user.username;
+    };
+
     var resetDeck = function () {
       for (var i = 0; i < $scope.deck.cards.length; i++) {
         $scope.deck.cards[i].selected = false;
@@ -78,6 +83,8 @@ angular.module('planningPokerApp')
         onCommit(data);
       } else if (data.type === 'restart') {
         onRestart(data);
+      } else if (data.type === 'nick') {
+        onNicknameChange(data);
       }
     };
 
@@ -156,9 +163,9 @@ angular.module('planningPokerApp')
     $scope.onSaveUser = function (user) {
       userService.setUsername(user.username);
       $scope.state.isEditingUsername = false;
+
+      socket.emit('message', { type: 'nick', room: $scope.room, user: user } );
     };
 
-    socket.emit('message', { type: 'join',
-                             slug: $routeParams.slug,
-                             user: userService.getUser() });
+    socket.emit('message', { type: 'join', slug: $routeParams.slug, user: userService.getUser() });
   });

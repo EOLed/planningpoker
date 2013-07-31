@@ -212,6 +212,7 @@ describe('Controller: RoomCtrl', function () {
         describe('when save clicked', function () {
           beforeEach(function () {
             spyOn(userService, 'setUsername');
+            spyOn(socket, 'emit');
             scope.onUsernameClicked();
             scope.onSaveUser({ username: 'myusername' });
           });
@@ -222,6 +223,12 @@ describe('Controller: RoomCtrl', function () {
 
           it('should persist username into userService', function () {
             expect(userService.setUsername).toHaveBeenCalledWith('myusername');
+          });
+
+          it('should emit a message to the server', function () {
+            expect(socket.emit).toHaveBeenCalledWith('message', { type: 'nick',
+                                                                  room: selectedRoom,
+                                                                  user: { username: 'myusername' } });
           });
         });
       });
@@ -249,6 +256,12 @@ describe('Controller: RoomCtrl', function () {
                                              slug: 'dummyslug',
                                              room: { mydata: 'test' } });
         expect(scope.room).toEqual({ mydata: 'test' });
+      });
+
+      it('should update user when he changes username', function () {
+        var me = { id: 1234, username: 'mynewusername', type: 'voter', status: { type: 'active' } };
+        scope.$broadcast('socket:message', { type: 'nick', slug: 'dummyslug', user: me });
+        expect(scope.room.users[0].username).toEqual('mynewusername');
       });
 
       it('should update scope.room when a user has committed estimate', function () {
