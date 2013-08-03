@@ -19,6 +19,11 @@ angular.module('planningPokerApp')
                             display: '<i class="icon-coffee"></i>',
                             value: 'coffee' } ] };
 
+    var isMe = function (user) {
+      return user.id === userService.getUser().id;
+    };
+
+
     var onJoin = function (data) {
       $scope.room = data.room;
       $scope.deck = deck;
@@ -152,12 +157,18 @@ angular.module('planningPokerApp')
       return user.username ? user.username : user.id;
     };
 
-    $scope.isMe = function (user) {
-      return user.id === userService.getUser().id;
+    $scope.isMe = isMe;
+
+    $scope.onUsernameClicked = function (user) {
+      if (isMe(user)) {
+        $scope.state.isEditingUsername = true;
+      }
     };
 
-    $scope.onUsernameClicked = function () {
-      $scope.state.isEditingUsername = true;
+    $scope.onCancelSaveUser = function () {
+      var currentUser = userService.getUser();
+      getUserInRoom(currentUser.id).username = currentUser.username;
+      $scope.state.isEditingUsername = false;
     };
 
     $scope.onSaveUser = function (user) {

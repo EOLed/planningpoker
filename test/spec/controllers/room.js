@@ -204,16 +204,56 @@ describe('Controller: RoomCtrl', function () {
       });
 
       describe('when editing username', function () {
+        describe('for a different user', function () {
+          it('should not keep state as editing if currently editing', function () {
+            scope.state.isEditingUsername = true;
+            scope.onUsernameClicked({ id: 'notmyuser' });
+            expect(scope.state.isEditingUsername).toBeTruthy();
+          });
+
+          it('should not keep state as not editing if currently not editing', function () {
+            scope.state.isEditingUsername = false;
+            scope.onUsernameClicked({ id: 'notmyuser' });
+            expect(scope.state.isEditingUsername).toBeFalsy();
+          });
+        });
+
         it('should track when username is being edited', function () {
-          scope.onUsernameClicked();
+          scope.onUsernameClicked(userService.getUser());
           expect(scope.state.isEditingUsername).toBeTruthy();
+        });
+
+        describe('when cancel clicked', function () {
+          beforeEach(function () {
+            spyOn(userService, 'setUsername');
+            spyOn(socket, 'emit');
+            scope.onUsernameClicked(userService.getUser());
+            scope.room.users[0].username = 'notachan';
+            scope.onCancelSaveUser();
+          });
+
+          it('should track when username is no longer being edited', function () {
+            expect(scope.state.isEditingUsername).toBeFalsy();
+          });
+
+          it('should revert username back to original value', function () {
+            expect(scope.room.users[0].username).toEqual('achan');
+          });
+
+          it('should not persist username into userService', function () {
+            expect(userService.setUsername).not.toHaveBeenCalled();
+          });
+
+          it('should not emit a message to the server', function () {
+            expect(socket.emit).not.toHaveBeenCalled();
+          });
         });
 
         describe('when save clicked', function () {
           beforeEach(function () {
             spyOn(userService, 'setUsername');
             spyOn(socket, 'emit');
-            scope.onUsernameClicked();
+            scope.onUsernameClicked(userService.getUser());
             scope.onSaveUser({ username: 'myusername' });
           });
 
