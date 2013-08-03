@@ -10,7 +10,7 @@
     "angular-resource": "~1.0.7",
     "angular-cookies": "~1.0.7",
     "angular-sanitize": "~1.0.7",
-    "bootstrap": "~2.3.2",
+    "bootstrap": "~3.0.0",
     "angular-socket-io": "~0.1.1",
     "socket.io-client": "~0.9.16"
   },

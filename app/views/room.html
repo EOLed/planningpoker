@@ -1,7 +1,7 @@
 <div>
   <div class="container">
     <div class="row">
-      <div class="span12">
+      <div class="col-12">
         <h1>
           <a ng-href="/#" class="branding"><i class="icon-group"></i> Planning Poker</a>
           <small>Room: <a ng-href="#/room/{{room.slug}}">{{room.slug}}</a></small>
@@ -13,7 +13,7 @@
   <div class="deck" ng-class="{'committed': userSelection.committed}">
     <div class="container">
       <div class="row">
-        <div class="span12">
+        <div class="col-12">
           <card ng-class="{'selected': $parent.card.selected}"
                 ng-repeat="card in deck.cards"
                 value="{{card.value}}"
@@ -27,28 +27,34 @@
 
   <div class="container">
     <div class="row room-details">
-      <div class="span9">
+      <div class="col-9">
         <ul class="user-list">
           <li ng-repeat="user in room.users">
-            <i class="icon-user"></i>
-            <div class="input-append" ng-show="isMe(user) && state.isEditingUsername">
-              <input type="text" ng-model="user.username" />
-              <button class="btn" type="button" ng-click="onSaveUser(user)">Save</button>
-              <button class="btn" type="button" ng-click="onCancelSaveUser()">Cancel</button>
+            <div class="row">
+              <div class="col-6">
+                <div class="input-group" ng-show="isMe(user) && state.isEditingUsername">
+                  <input class="form-control" type="text" ng-model="user.username" />
+                  <span class="input-group-btn">
+                    <button class="btn" type="button" ng-click="onSaveUser(user)">Save</button>
+                    <button class="btn" type="button" ng-click="onCancelSaveUser()">Cancel</button>
+                  </span>
+                </div>
+                <span ng-show="!isMe(user) || !state.isEditingUsername"
+                      ng-class="{ me: isMe(user) }"
+                      ng-click="onUsernameClicked(user)">
+                  <i class="icon-user"></i>
+                  <span>{{getDisplayName(user)}}</span>
+                  <span ng-show="isMe(user)">(me)</span>
+                  <i class="icon-check-sign" ng-show="user.status.type == 'committed'"></i>
+                  <i class="icon-check-empty" ng-show="user.status.type != 'committed'"></i>
+                  <span ng-bind="user.status.value" ng-show="allCommitted()" />
+                </span>
+              </div>
             </div>
-            <span ng-show="!isMe(user) || !state.isEditingUsername"
-                  ng-class="{ me: isMe(user) }"
-                  ng-click="onUsernameClicked(user)">
-              <span>{{getDisplayName(user)}}</span>
-              <span ng-show="isMe(user)">(me)</span>
-            </span>
-            <i class="icon-check-sign" ng-show="user.status.type == 'committed'"></i>
-            <i class="icon-check-empty" ng-show="user.status.type != 'committed'"></i>
-            <span ng-bind="user.status.value" ng-show="allCommitted()" />
           </li>
         </ul>
       </div>
-      <div class="span3 room-actions">
+      <div class="col-3 room-actions">
         <button class="btn btn-large btn-primary"
                 type="button"
                 ng-click="commit()"
