@@ -31,11 +31,11 @@
         <ul class="user-list">
           <li ng-repeat="user in room.users">
             <i class="icon-user"></i>
-            <div class="input-append" ng-show="state.isEditingUsername">
+            <div class="input-append" ng-show="isMe(user) && state.isEditingUsername">
               <input type="text" ng-model="user.username" />
               <button class="btn" type="button" ng-click="onSaveUser(user)">Save</button>
             </div>
-            <span ng-show="!state.isEditingUsername" ng-click="onUsernameClicked()">
+            <span ng-show="!isMe(user) || !state.isEditingUsername" ng-click="onUsernameClicked()">
               <span>{{getDisplayName(user)}}</span>
               <span ng-show="isMe(user)">(me)</span>
             </span>
