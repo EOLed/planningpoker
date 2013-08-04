@@ -3,7 +3,7 @@
 'use strict';
 
 describe('Controller: RoomCtrl', function () {
-  var RoomCtrl, scope, $httpBackend, $routeParams, createController, socket, userService;
+  var RoomCtrl, scope, rootScope, $httpBackend, $routeParams, createController, socket, userService;
 
   // load the controller's module
   beforeEach(module('planningPokerApp'));
@@ -14,6 +14,7 @@ describe('Controller: RoomCtrl', function () {
       function ($injector, $controller, $rootScope, _$httpBackend_, _$routeParams_, _socket_,
                 _userService_) {
         scope = $rootScope.$new();
+        rootScope = $rootScope;
         $httpBackend = _$httpBackend_;
         $routeParams = _$routeParams_;
         socket = _socket_;
@@ -25,6 +26,11 @@ describe('Controller: RoomCtrl', function () {
       }
     )
   );
+
+  it('should set the title with the current room', function () {
+    createController();
+    expect(rootScope.title.indexOf('dummyslug')).toBeGreaterThan(-1);
+  });
 
   describe('Backend running', function () {
     var selectedRoom, currentUser, deck;

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('planningPokerApp')
-  .controller('RoomCtrl', function ($scope, $http, $routeParams, socket, userService) {
+  .controller('RoomCtrl', function ($rootScope, $scope, $http, $routeParams, socket, userService) {
     var deck = { type: 'mountainGoat',
                  cards: [ { selected: false, display: '0', value: '0' },
                           { selected: false, display: '&frac12;', value: '.5' },
@@ -177,6 +177,8 @@ angular.module('planningPokerApp')
 
       socket.emit('message', { type: 'nick', room: $scope.room, user: user } );
     };
+
+    $rootScope.title = 'Planning Poker Room #' + $routeParams.slug;
 
     socket.emit('message', { type: 'join', slug: $routeParams.slug, user: userService.getUser() });
   });

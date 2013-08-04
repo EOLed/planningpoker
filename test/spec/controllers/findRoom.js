@@ -3,7 +3,7 @@
 'use strict';
 
 describe('Controller: FindRoomCtrl', function () {
-  var randomHexService, FindRoomCtrl, scope, $httpBackend, $location, userService;
+  var randomHexService, FindRoomCtrl, rootScope, scope, $httpBackend, $location, userService;
 
   // load the controller's module
   beforeEach(module('planningPokerApp'));
@@ -14,6 +14,7 @@ describe('Controller: FindRoomCtrl', function () {
       function ($controller, $rootScope, _randomHexService_, _$httpBackend_, _$location_,
                 _userService_) {
         scope = $rootScope.$new();
+        rootScope = $rootScope;
         FindRoomCtrl = $controller('FindRoomCtrl', { $scope: scope });
         $httpBackend = _$httpBackend_;
         randomHexService = _randomHexService_;
@@ -22,6 +23,10 @@ describe('Controller: FindRoomCtrl', function () {
       }
     )
   );
+
+  it('should set the title in $rootScope', function () {
+    expect(rootScope.title).toBeDefined();
+  });
 
   describe('action: join', function () {
     it('should change location to the room specified', function () {
