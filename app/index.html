@@ -17,6 +17,11 @@
     <link rel="stylesheet" href="styles/room.css">
     <link rel="stylesheet" href="styles/card.css">
     <!-- endbuild -->
+    <style>
+      .top-banner-planning-poker { width: 320px; height: 50px; }
+      @media(min-width: 500px) { .top-banner-planning-poker { width: 468px; height: 60px; } }
+      @media(min-width: 800px) { .top-banner-planning-poker { width: 728px; height: 90px; } }
+    </style>
   </head>
   <body>
     <!--[if lt IE 7]>
@@ -35,6 +40,18 @@
 
     <!-- Add your site or application content here -->
     <div ng-view=""></div>
+
+    <div class="container ads">
+      <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- top banner planning poker -->
+      <ins class="adsbygoogle top-banner-planning-poker"
+           style="display:inline-block"
+           data-ad-client="ca-pub-3618440658775904"
+           data-ad-slot="5116971695"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
 
     <script>
       var _gaq=[['_setAccount','UA-42929030-1'],['_trackPageview']];
