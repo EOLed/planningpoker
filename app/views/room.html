@@ -11,27 +11,32 @@
   </div>
 
   <div class="deck" ng-class="{'committed': userSelection.committed}">
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <card ng-class="{'selected': $parent.card.selected}"
-                ng-repeat="card in deck.cards"
-                value="{{card.value}}"
-                ng-click="$parent.selectCard($parent.card)">
-            <span ng-bind-html-unsafe="card.display"></span>
-          </card>
-        </div>
+    <div>
+      <div>
+        <card ng-class="{'selected': $parent.card.selected}"
+              ng-repeat="card in deck.cards"
+              value="{{card.value}}"
+              ng-click="$parent.selectCard($parent.card)">
+          <span ng-bind-html-unsafe="card.display"></span>
+        </card>
       </div>
     </div>
   </div>
 
   <div class="container">
     <div class="row room-details">
-      <div class="col-9">
+      <div class="col-12 col-sm-3 room-actions">
+          <a class="btn btn-block btn-large btn-primary"
+             ng-click="commit()"
+             ng-disabled="!userSelection || userSelection.committed">Commit</a>
+          <a ng-show="isHost()" ng-click="restart()" class="btn btn-block btn-large btn-default" type="button">Restart</a>
+      </div>
+      <div class="user-list col-12 col-sm-9">
+        <h2>Room</h2>
         <ul class="user-list">
           <li ng-repeat="user in room.users">
             <div class="row">
-              <div class="col-6">
+              <div class="col-12">
                 <div class="input-group" ng-show="isMe(user) && state.isEditingUsername">
                   <input class="form-control" type="text" ng-model="user.username" />
                   <span class="input-group-btn">
@@ -53,16 +58,6 @@
             </div>
           </li>
         </ul>
-      </div>
-      <div class="col-3 room-actions">
-        <button class="btn btn-large btn-primary"
-                type="button"
-                ng-click="commit()"
-                ng-disabled="!userSelection || userSelection.committed">Commit</button>
-        <button ng-show="isHost()"
-                ng-click="restart()"
-                class="btn btn-large"
-                type="button">Restart</button>
       </div>
     </div>
   </div>

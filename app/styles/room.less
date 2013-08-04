@@ -16,6 +16,14 @@ a.branding:hover {
 .deck {
   padding: @spacing 0;
   background-color: @deck-background;
+
+  div {
+    overflow-x: scroll;
+
+    div {
+      white-space: nowrap;
+    }
+  }
 }
 
 .committed .card {
@@ -35,7 +43,6 @@ a.branding:hover {
 }
 
 .room-actions {
-  text-align: right;
 }
 
 .user-list {
