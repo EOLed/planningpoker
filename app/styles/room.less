@@ -1,10 +1,10 @@
-@background: #fafafa;
-@color: #333;
+@import "_variables";
+
+@color: @main-color;
 @spacing: 20px;
-@deck-background: #555;
+@deck-background: @secondary-color;
 
 body {
-  background: @background;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: @color;
 }
@@ -18,6 +18,7 @@ a.branding:hover {
   background-color: @deck-background;
 
   div {
+    overflow: hidden;
     overflow-x: scroll;
 
     div {

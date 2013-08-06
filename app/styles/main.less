@@ -1,0 +1,29 @@
+@import "_variables";
+
+body {
+  background-color: @background;
+  color: @main-color;
+}
+
+a {
+  color: @accent-color;
+}
+
+a:hover {
+  color: @detail-color;
+}
+
+h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small {
+  color: @detail-color;
+}
+
+footer, .footer {
+  background-color: @secondary-color;
+  margin-top: 20px;
+  padding: 10px 0 50px 0;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active {
+  /*background-color: @accent-color;
+  border-color: @secondary-color;*/
+}
